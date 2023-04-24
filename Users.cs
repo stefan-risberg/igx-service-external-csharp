@@ -34,13 +34,11 @@ public class Users : IUsers
 
     public bool ValidateUser(string userName,
                              string userPassword) {
-        var hashedPassword = users[userName];
-        if (hashedPassword == null) {
-            return false;
-        } else if (BC.Verify(userPassword, hashedPassword)) {
-            return true;
-        } else {
-            return false;
+        string? hashedPassword;
+        if (users.TryGetValue(userName, out hashedPassword)) {
+            return BC.Verify(userPassword, hashedPassword);
         }
+
+        return false;
     }
 }
