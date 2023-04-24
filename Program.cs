@@ -37,7 +37,6 @@ app.UseAuthorization();
 app.MapPost(
     "/template/igx-service/{customerKey}/{orgKey}/addone",
     [Authorize] async (HttpRequest req) => {
-        app.Logger.LogInformation("Fisk");
         var dat = await req.ReadFromJsonAsync<Request>(serializeOptions);
         if (dat == null || dat.InParams == null) {
             return Results.BadRequest();

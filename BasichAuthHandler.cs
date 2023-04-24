@@ -21,12 +21,12 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         string authHeader = Request.Headers["Authorization"];
 
         if (authHeader == null) {
-            logger.LogDebug("No auth header");
+            logger.LogInformation("No auth header");
 
             Response.StatusCode = 401;
             return Task.FromResult(AuthenticateResult.Fail("Invalid Authorization Header"));
         } else if (!authHeader.StartsWith("basic", StringComparison.OrdinalIgnoreCase)) {
-            logger.LogDebug("Header does not contain a basic auth part");
+            logger.LogInformation("Header does not contain a basic auth part");
 
             Response.StatusCode = 401;
             return Task.FromResult(AuthenticateResult.Fail("Invalid Authorization Header"));
@@ -44,9 +44,11 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
                 var identity = new ClaimsIdentity(claims, "Basic");
                 var claimsPrincipal = new ClaimsPrincipal(identity);
                 return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, Scheme.Name)));
+            } else {
+                logger.LogDebug("Not authorized");
             }
         } else {
-            logger.LogDebug("Failed to parse credentials");
+            logger.LogWarning("Failed to parse credentials");
             Response.StatusCode = 500;
             return Task.FromResult(AuthenticateResult.Fail("Failed to parse credentials"));
         }
