@@ -7,8 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-var serializeOptions = new JsonSerializerOptions
-{
+var serializeOptions = new JsonSerializerOptions {
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
 
 };
@@ -16,10 +15,9 @@ var serializeOptions = new JsonSerializerOptions
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-    {
-        c.SwaggerDoc("igx-openapi", new OpenApiInfo { Title = "IGX Service External CSharp", Version = "v1" });
-    }
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("igx-openapi", new OpenApiInfo { Title = "IGX Service External CSharp", Version = "v1" });
+}
 );
 
 builder.Services.AddAuthentication("BasicAuthentication")
@@ -38,11 +36,10 @@ app.UseAuthorization();
 // Replace template with your own name here
 app.MapPost(
     "/template/igx-service/{customerKey}/{orgKey}/addone",
-    [Authorize] async (HttpRequest req) =>
-    {
+    [Authorize] async (HttpRequest req) => {
         app.Logger.LogInformation("Fisk");
         var dat = await req.ReadFromJsonAsync<Request>(serializeOptions);
-        if (dat == null || dat.InParams == null ) {
+        if (dat == null || dat.InParams == null) {
             return Results.BadRequest();
         }
         var param1 = dat.InParams["1"];
@@ -62,13 +59,11 @@ app.MapPost(
     });
 
 // Configure the HTTP request pipeline.
-app.UseSwagger(c =>
-{
+app.UseSwagger(c => {
     c.RouteTemplate = "/template/{documentName}";
 });
 
-app.UseSwaggerUI(c =>
-{
+app.UseSwaggerUI(c => {
     c.SwaggerEndpoint("/template/igx-openapi", "IGX CSharp Template v1");
 });
 
