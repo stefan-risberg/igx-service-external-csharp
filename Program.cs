@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using System.Text.Json;
 
@@ -20,15 +22,25 @@ builder.Services.AddSwaggerGen(c =>
     }
 );
 
+builder.Services.AddAuthentication("BasicAuthentication")
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>
+    ("BasicAuthentication", null);
+builder.Services.AddAuthorization();
+builder.Services.AddSingleton<IUsers, Users>();
+
 var app = builder.Build();
 
+
 app.UseStaticFiles();
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Replace template with your own name here
 app.MapPost(
     "/template/igx-service/{customerKey}/{orgKey}/addone",
-    async (HttpRequest req) =>
+    [Authorize] async (HttpRequest req) =>
     {
+        app.Logger.LogInformation("Fisk");
         var dat = await req.ReadFromJsonAsync<Request>(serializeOptions);
         if (dat == null || dat.InParams == null ) {
             return Results.BadRequest();
