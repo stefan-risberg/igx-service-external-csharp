@@ -1,3 +1,5 @@
+using BC = BCrypt.Net.BCrypt;
+
 public interface IUsers {
     public bool ValidateUser(string userName, string userPasswordHash);
 }
@@ -30,8 +32,15 @@ public class Users : IUsers
         }
     }
 
-    public bool ValidateUser(string userName, string userPassword)
-    {
-        throw new NotImplementedException();
+    public bool ValidateUser(string userName,
+                             string userPassword) {
+        var hashedPassword = users[userName];
+        if (hashedPassword == null) {
+            return false;
+        } else if (BC.Verify(userPassword, hashedPassword)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

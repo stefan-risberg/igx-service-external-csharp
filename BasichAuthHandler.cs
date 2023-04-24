@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
@@ -41,7 +42,10 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             var authorized = usersDb.ValidateUser(credentials[0], credentials[1]);
 
             if (authorized) {
-
+                var claims = new [] { new Claim("name", credentials[0]), new Claim(ClaimTypes.Role, "User") };
+                var identity = new ClaimsIdentity(claims, "Basic");
+                var claimsPrincipal = new ClaimsPrincipal(identity);
+                return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, Scheme.Name)));
             }
         } else {
             logger.LogDebug("Failed to parse credentials");
