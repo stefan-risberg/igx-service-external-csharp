@@ -22,6 +22,31 @@ builder.Services.AddSwaggerGen(c => {
 
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
+    c.AddSecurityDefinition("http", new OpenApiSecurityScheme {
+        Description = "Basic",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "basic"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement() {
+            {
+                new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "http"
+                        },
+                        Scheme = "basic",
+                        Name = "basic",
+                        In = ParameterLocation.Header
+                    },
+                    new List<string>()
+            }
+        });
+
 });
 
 // Basic authenication handler
