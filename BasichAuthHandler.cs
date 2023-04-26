@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 #pragma warning disable 1591
 /// <summary>
-/// Handeling basic authentication.
+/// Handling basic authentication.
 /// </summary>
 public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions> {
     IUsers usersDb;

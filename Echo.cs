@@ -12,7 +12,7 @@ public class Echo : ControllerBase {
     ILogger logger;
 
     /// <summary>
-    /// Base consturctor taking a logger
+    /// Base constructor taking a logger
     /// </summary>
     public Echo(ILogger<Echo> _logger) {
         logger = _logger;

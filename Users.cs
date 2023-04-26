@@ -5,7 +5,7 @@ using BC = BCrypt.Net.BCrypt;
 /// </summary>
 public interface IUsers {
     /// <summary>
-    /// Validate if user is a valid user and has a valid passowrd.
+    /// Validate if user is a valid user and has a valid password.
     /// </summary>
     /// <param name="userName">User name of user</param>
     /// <param name="userPassword">Password of user</param>
