@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>igx_service_external_csharp</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PublishRelease>true</PublishRelease>
   </PropertyGroup>
 
   <ItemGroup>

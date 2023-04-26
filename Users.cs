@@ -40,6 +40,7 @@ public class Users : IUsers
         } else {
             logger.LogInformation($"Start reading in users from file {userFile}");
 
+            try {
             using (var sr = new StreamReader(userFile)) {
                 string? line;
                 int lineNum = 0;
@@ -56,6 +57,10 @@ public class Users : IUsers
                         users.Add(user, hashedPwd);
                     }
                 }
+            }
+            } catch (FileNotFoundException e) {
+                logger.LogWarning($"Users file {userFile} does not exist, all authentication request will return false");
+                logger.LogDebug(e.ToString());
             }
         }
     }

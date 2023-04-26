@@ -6,4 +6,4 @@ tmp/
 .vs
 bin
 obj
-.users.txt
+data/
