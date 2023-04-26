@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Authorization;
 [Authorize]
 public class Echo : ControllerBase {
     ILogger logger;
+
+    /// <summary>
+    /// Base consturctor taking a logger
+    /// </summary>
     public Echo(ILogger<Echo> _logger) {
         logger = _logger;
     }
