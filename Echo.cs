@@ -1,12 +1,18 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 
 /// <summary>
 /// Echo service endpoint
 /// </summary>
 [ApiController]
+[Authorize]
 public class Echo : ControllerBase {
+    ILogger logger;
+    public Echo(ILogger<Echo> _logger) {
+        logger = _logger;
+    }
     /// <summary>
     /// The post endpoint for echo.
     ///
@@ -32,6 +38,7 @@ public class Echo : ControllerBase {
             return TypedResults.BadRequest();
         } else {
             var resp = new EchoResponse();
+
             resp.OutParams["1"] = param1;
             resp.Ref = req.Ref;
             return TypedResults.Ok<EchoResponse>(resp);
@@ -64,11 +71,11 @@ public class EchoResponse {
     /// Holds all return parameters that are sent back to the IGX Service.
     /// </summary>
     /// <example>{"1": "test 123"}</example>
-    public Dictionary<string, string> OutParams { get ; set; } = default!;
+    public Dictionary<string, string> OutParams { get ; set; } = new Dictionary<string, string>();
 
     /// <summary>
     /// Reference copied from <c>Request</c>
     /// </summary>
     /// <example>123123</example>
-    public string Ref { get; set; } = default!;
+    public string Ref { get; set; } = "";
 }
