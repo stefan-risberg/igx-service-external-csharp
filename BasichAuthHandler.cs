@@ -4,8 +4,13 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 
+#pragma warning disable 1591
+/// <summary>
+/// Handeling basic authentication.
+/// </summary>
 public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions> {
     IUsers usersDb;
+
     public BasicAuthenticationHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
@@ -18,7 +23,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync() {
         var logger = Logger;
-        string authHeader = Request.Headers["Authorization"];
+        string? authHeader = Request.Headers["Authorization"];
 
         if (authHeader == null) {
             logger.LogInformation("No auth header");
