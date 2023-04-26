@@ -37,15 +37,16 @@ public class Echo : ControllerBase {
         string customerKey,
         string orgKey) {
 
+        try {
         var param1 = req.InParams["1"];
-        if (param1 == null) {
-            return TypedResults.BadRequest();
-        } else {
-            var resp = new EchoResponse();
+        var resp = new EchoResponse();
 
-            resp.OutParams["1"] = param1;
-            resp.Ref = req.Ref;
-            return TypedResults.Ok<EchoResponse>(resp);
+        resp.OutParams["1"] = param1;
+        resp.Ref = req.Ref;
+        return TypedResults.Ok<EchoResponse>(resp);
+        } catch (KeyNotFoundException e) {
+            logger.LogInformation($"Nothing set in key 1 {e.ToString()}");
+            return TypedResults.Ok<EchoResponse>(new EchoResponse());
         }
     }
 }
