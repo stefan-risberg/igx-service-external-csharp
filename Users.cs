@@ -23,8 +23,7 @@ public interface IUsers {
 ///
 /// All users need to be unique.
 /// </remarks>
-public class Users : IUsers
-{
+public class Users : IUsers {
     private Dictionary<string, string> users = new Dictionary<string, string>();
     private ILogger logger;
 
@@ -41,23 +40,23 @@ public class Users : IUsers
             logger.LogInformation($"Start reading in users from file {userFile}");
 
             try {
-            using (var sr = new StreamReader(userFile)) {
-                string? line;
-                int lineNum = 0;
+                using (var sr = new StreamReader(userFile)) {
+                    string? line;
+                    int lineNum = 0;
 
-                while ((line = sr.ReadLine()) != null) {
-                    lineNum += 1;
-                    var d = line.Split("\t");
-                    if (d.Length < 2) {
-                        logger.LogCritical($"Could not read user on line {lineNum}");
-                    } else {
-                        var user = d[0];
-                        var hashedPwd = d[1];
+                    while ((line = sr.ReadLine()) != null) {
+                        lineNum += 1;
+                        var d = line.Split("\t");
+                        if (d.Length < 2) {
+                            logger.LogCritical($"Could not read user on line {lineNum}");
+                        } else {
+                            var user = d[0];
+                            var hashedPwd = d[1];
 
-                        users.Add(user, hashedPwd);
+                            users.Add(user, hashedPwd);
+                        }
                     }
                 }
-            }
             } catch (FileNotFoundException e) {
                 logger.LogWarning($"Users file {userFile} does not exist, all authentication request will return false");
                 logger.LogDebug(e.ToString());
