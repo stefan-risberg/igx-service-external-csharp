@@ -18,6 +18,10 @@ public interface IUsers {
 /// </summary>
 /// <remarks>
 /// The location of file is specified in configuration file with name <c>UserFile</c>
+///
+/// The format of the file is username tab, then BCrypt hashed password.
+///
+/// All users need to be unique.
 /// </remarks>
 public class Users : IUsers
 {
