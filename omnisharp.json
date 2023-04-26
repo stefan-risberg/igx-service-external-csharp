@@ -21,8 +21,10 @@
     "NewLineForMembersInAnonymousTypes": false,
     "NewLineForClausesInQuery": false
   },
-  "omnisharp.path": "latest",
   "omnisharp.useModernNet": true,
   "omnisharp.enableRoslynAnalyzers": true,
-  "omnisharp.disableMSBuildDiagnosticWarning": true
+  "omnisharp.disableMSBuildDiagnosticWarning": true,
+  "SDK": {
+    "includePrereleases": true
+  }
 }
