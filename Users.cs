@@ -1,13 +1,31 @@
 using BC = BCrypt.Net.BCrypt;
 
+/// <summary>
+/// Interface for user management in api.
+/// </summary>
 public interface IUsers {
-    public bool ValidateUser(string userName, string userPasswordHash);
+    /// <summary>
+    /// Validate if user is a valid user and has a valid passowrd.
+    /// </summary>
+    /// <param name="userName">User name of user</param>
+    /// <param name="userPassword">Password of user</param>
+    /// <returns>True if user exists and password match, else false</returns>
+    public bool ValidateUser(string userName, string userPassword);
 }
 
+/// <summary>
+/// Implementation of user management backed by file.
+/// </summary>
+/// <remarks>
+/// The location of file is specified in configuration file with name <c>UserFile</c>
+/// </remarks>
 public class Users : IUsers
 {
     private Dictionary<string, string> users = new Dictionary<string, string>();
 
+    /// <summary>
+    /// Reads in <c>UserFile</c> location.
+    /// </summary>
     public Users(ILogger<Users> logger, IConfiguration configuration) {
         string userFile = configuration["UsersFile"];
         logger.LogInformation($"Start reading in users from file {userFile}");
@@ -32,6 +50,7 @@ public class Users : IUsers
         }
     }
 
+    /// <inheritdoc />
     public bool ValidateUser(string userName,
                              string userPassword) {
         string? hashedPassword;
