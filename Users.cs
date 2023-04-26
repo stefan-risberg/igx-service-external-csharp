@@ -36,7 +36,7 @@ public class Users : IUsers
 
         string? userFile = configuration["UsersFile"];
         if (userFile == null) {
-            logger.LogWarning("No file specified in {UsersFile}, all authetincation requests will return false");
+            logger.LogWarning("No file specified in 'UsersFile', all authetincation requests will return false");
         } else {
             logger.LogInformation($"Start reading in users from file {userFile}");
 
