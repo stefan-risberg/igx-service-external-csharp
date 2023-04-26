@@ -26,29 +26,35 @@ public interface IUsers {
 public class Users : IUsers
 {
     private Dictionary<string, string> users = new Dictionary<string, string>();
+    private ILogger logger;
 
     /// <summary>
     /// Reads in <c>UserFile</c> location.
     /// </summary>
-    public Users(ILogger<Users> logger, IConfiguration configuration) {
-        string userFile = configuration["UsersFile"];
-        logger.LogInformation($"Start reading in users from file {userFile}");
+    public Users(ILogger<Users> _logger, IConfiguration configuration) {
+        logger = _logger;
 
-        using (var sr = new StreamReader(userFile)) {
-            string? line;
-            int lineNum = 0;
+        string? userFile = configuration["UsersFile"];
+        if (userFile == null) {
+            logger.LogWarning("No file specified in {UsersFile}, all authetincation requests will return false");
+        } else {
+            logger.LogInformation($"Start reading in users from file {userFile}");
 
-            while ((line = sr.ReadLine()) != null) {
-                lineNum += 1;
-                var d = line.Split("\t");
-                if (d.Length < 2) {
-                    logger.LogCritical($"Could not read user on line {lineNum}");
-                } else {
-                    var user = d[0];
-                    var hashedPwd = d[1];
-                    logger.LogDebug($"Got user with {user} and hashed password {hashedPwd}");
+            using (var sr = new StreamReader(userFile)) {
+                string? line;
+                int lineNum = 0;
 
-                    users.Add(user, hashedPwd);
+                while ((line = sr.ReadLine()) != null) {
+                    lineNum += 1;
+                    var d = line.Split("\t");
+                    if (d.Length < 2) {
+                        logger.LogCritical($"Could not read user on line {lineNum}");
+                    } else {
+                        var user = d[0];
+                        var hashedPwd = d[1];
+
+                        users.Add(user, hashedPwd);
+                    }
                 }
             }
         }
