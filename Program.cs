@@ -15,6 +15,18 @@ builder.Services.ConfigureHttpJsonOptions(options => {
     options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 
+// Setup cors service
+var corsSettings = "igx-cors";
+
+builder.Services.AddCors(options => {
+    options.AddPolicy(name: corsSettings,
+                      policy => {
+                          policy.WithOrigins("https://igx.fiskhamn.se",
+                                             "https://cci-internal.ccs.teliacompany.net"
+                          );
+                      });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
@@ -60,6 +72,7 @@ builder.Services.AddSingleton<IUsers, Users>();
 var app = builder.Build();
 
 app.UseStaticFiles();
+app.UseCors(corsSettings);
 app.UseAuthentication();
 app.UseAuthorization();
 
